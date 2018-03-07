@@ -54,6 +54,7 @@ module OpenTracing
           sc = status_code/100
 
           endpoint = @normalize.call("HTTP #{span.operation_name} #{span.tags['http.url']}")
+          span.operation_name = endpoint.blank? ? 'rails' : endpoint 
           endpoint = 'other' if endpoint.blank?
           err = Prometheus.error_value(span)
 
@@ -83,7 +84,7 @@ module OpenTracing
       # This collector adds metrics gathering for opentracing/jaeger spans
       class Collector
         def initialize(
-          collector: Jaeger::Client::Collector.new,
+          collector: ::Jaeger::Client::Collector.new,
           registry: ::Prometheus::Client.registry,
           namespace: '',
           normalize: DEFAULT_NORMALIZE
@@ -91,13 +92,13 @@ module OpenTracing
           @collector = collector
           @namespace = namespace
           @http_metrics = HTTPMetrics.new(registry: registry, namespace: namespace, normalize: normalize)
-          @operation_metrics = registry.histogram(:operation_duration_microseconds, 'Duration of operations in second')
+          @operation_metrics = registry.histogram(:operation_duration_seconds, 'Duration of operations in second')
         end
 
         def send_span(span, end_time)
           duration = (end_time - span.start_time).to_f
           track_prometheus(span, duration)
-          @collector.send_span(span, duration)
+          @collector.send_span(span, end_time)
         end
 
         def retrieve()
