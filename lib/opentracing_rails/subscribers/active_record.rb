@@ -12,7 +12,7 @@ module OpenTracing
           return if OpenTracing::Rails.skip_schema_queries and payload[:name] == 'SCHEMA'
 
           span = OpenTracing.start_span(payload[:name], child_of: env['rack.span'], start_time: started, tags: payload)
-          span.finish(end_time: finished)
+          span.finish(end_time: finished||Time.now)
         end
       end
     end
