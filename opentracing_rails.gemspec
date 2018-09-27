@@ -15,11 +15,11 @@ Gem::Specification.new do |s|
     s.license     = 'Apache-2.0'
 
     # Dependencies
-    s.add_dependency('rack-tracer', '~> 0.3.0')
-    s.add_dependency('faraday', '~> 0.14.0')
-    s.add_dependency('faraday-tracer', '~> 0.2.0')
-    s.add_dependency('jaeger-client', '~> 0.4.1')
-    s.add_dependency('prometheus-client', '~> 0.7.1')
+    s.add_dependency('rack-tracer', '~> 0.8.0')
+    s.add_dependency('faraday', '~> 0.15.0')
+    s.add_dependency('faraday-tracer', '~> 0.7.0')
+    s.add_dependency('jaeger-client', '~> 0.6.1')
+    s.add_dependency('prometheus-client', '~> 0.8.0')
 
     # Development dependencies
     s.add_development_dependency('rails', '> 3')
